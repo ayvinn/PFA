@@ -1,0 +1,22 @@
+C:\Users\Hakim\source\repos\PFA\PFA\bin\Debug\netcoreapp2.0\PFA.deps.json
+C:\Users\Hakim\source\repos\PFA\PFA\bin\Debug\netcoreapp2.0\PFA.runtimeconfig.json
+C:\Users\Hakim\source\repos\PFA\PFA\bin\Debug\netcoreapp2.0\PFA.runtimeconfig.dev.json
+C:\Users\Hakim\source\repos\PFA\PFA\bin\Debug\netcoreapp2.0\PFA.dll
+C:\Users\Hakim\source\repos\PFA\PFA\bin\Debug\netcoreapp2.0\PFA.pdb
+C:\Users\Hakim\source\repos\PFA\PFA\obj\Debug\netcoreapp2.0\PFA.csprojAssemblyReference.cache
+C:\Users\Hakim\source\repos\PFA\PFA\obj\Debug\netcoreapp2.0\PFA.csproj.CoreCompileInputs.cache
+C:\Users\Hakim\source\repos\PFA\PFA\obj\Debug\netcoreapp2.0\PFA.AssemblyInfoInputs.cache
+C:\Users\Hakim\source\repos\PFA\PFA\obj\Debug\netcoreapp2.0\PFA.AssemblyInfo.cs
+C:\Users\Hakim\source\repos\PFA\PFA\obj\Debug\netcoreapp2.0\PFA.dll
+C:\Users\Hakim\source\repos\PFA\PFA\obj\Debug\netcoreapp2.0\PFA.pdb
+C:\Users\Hakim\Documents\Visual Studio 2017\Projets\PFA\PFA\bin\Debug\netcoreapp2.0\PFA.deps.json
+C:\Users\Hakim\Documents\Visual Studio 2017\Projets\PFA\PFA\bin\Debug\netcoreapp2.0\PFA.runtimeconfig.json
+C:\Users\Hakim\Documents\Visual Studio 2017\Projets\PFA\PFA\bin\Debug\netcoreapp2.0\PFA.runtimeconfig.dev.json
+C:\Users\Hakim\Documents\Visual Studio 2017\Projets\PFA\PFA\bin\Debug\netcoreapp2.0\PFA.dll
+C:\Users\Hakim\Documents\Visual Studio 2017\Projets\PFA\PFA\bin\Debug\netcoreapp2.0\PFA.pdb
+C:\Users\Hakim\Documents\Visual Studio 2017\Projets\PFA\PFA\obj\Debug\netcoreapp2.0\PFA.csprojAssemblyReference.cache
+C:\Users\Hakim\Documents\Visual Studio 2017\Projets\PFA\PFA\obj\Debug\netcoreapp2.0\PFA.csproj.CoreCompileInputs.cache
+C:\Users\Hakim\Documents\Visual Studio 2017\Projets\PFA\PFA\obj\Debug\netcoreapp2.0\PFA.AssemblyInfoInputs.cache
+C:\Users\Hakim\Documents\Visual Studio 2017\Projets\PFA\PFA\obj\Debug\netcoreapp2.0\PFA.AssemblyInfo.cs
+C:\Users\Hakim\Documents\Visual Studio 2017\Projets\PFA\PFA\obj\Debug\netcoreapp2.0\PFA.dll
+C:\Users\Hakim\Documents\Visual Studio 2017\Projets\PFA\PFA\obj\Debug\netcoreapp2.0\PFA.pdb

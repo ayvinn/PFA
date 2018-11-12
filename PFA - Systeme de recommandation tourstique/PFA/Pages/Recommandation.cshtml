@@ -1,0 +1,718 @@
+﻿@page
+@model PFA.Pages.RecommandationModel
+@using DevExtreme.AspNet.Mvc.Builders;
+@{
+    ViewData["Title"] = "Recommandation";
+}
+
+<input type="hidden" value="@ViewData["listeActivites"]" id="inplisteActivites" />
+<input type="hidden" value="@ViewData["budgetHotel"]" id="inpbudgetHotel" />
+<input type="hidden" value="@ViewData["budgetFoods"]" id="inpbudgetFood" />
+
+@section Scripts{
+
+    <script src="~/js/modal.js"></script>
+    <script>
+        var locationRestaurants = @Html.Raw(Json.Serialize(ViewData["locationRestaurants"]));
+        var locationHotels = @Html.Raw(Json.Serialize(ViewData["locationHotels"]));
+        var locationActivities = @Html.Raw(Json.Serialize(ViewData["locationActivities"]));
+
+        var aPartirH = @ViewData["aPartirH"];
+        var aPartirR = @ViewData["aPartirR"];
+        var aPartirA = @ViewData["aPartirA"];
+        var typeService = "activity";
+        document.getElementById("activitiesMenu").addEventListener("click", function (e) {
+            e.preventDefault();
+            typeService = "activity";
+
+            $.ajax({
+                url: "ActivitiesService",
+                contentType: 'application/json',
+                data: { 'listeActivites': $("#inplisteActivites").val() },
+                traditional: true,
+                dataType: "json",
+                type: "get",
+                success: function (response) {
+                    $("#activities1").html("");
+                    for (var i = 0; i < response.length; i++) {
+                        $("#activities1").html("<div class='col-lg-3'><div class='single-destinations'><div class='thumb'><img src='" + response[i].Img + "' alt='' style='width:243px;height:162px;'></div><div class='details'><h4 class='d-flex justify-content-between'> <span style='width:203px;height:43px;'>" + response[i].Nom + "</span></h4><ul class='package-list'><li style='width:203px;height:61px;' class='d-flex justify-content-between align-items-center'> <span  class='lnr lnr-bookmark'></span> " + response[i].ActiviteTypes + "</li><a href='#' id='" + response[i].Id+"' class='genric-btn primary medium arrow act1'>Plus de détails <span class='lnr lnr-arrow-right'></span></a></ul></div></div></div>" + $("#activities1").html());
+                    }
+                    activityClick();
+                    aPartirA = 12;
+                }
+            });
+
+        });
+
+        document.getElementById("hotelsMenu").addEventListener("click", function (e) {
+            e.preventDefault();
+            typeService = "hotel";
+
+            $.ajax({
+                url: "HotelsService",
+                contentType: 'application/json',
+                data: { 'budgetHotel': $("#inpbudgetHotel").val() },
+                traditional: true,
+                dataType: "json",
+                type: "get",
+                success: function (response) {
+                    $("#activities1").html("");
+                    for (var i = 0; i < response.length; i++) {
+                        $("#activities1").html($("#activities1").html() + "<div class='col-lg-3'><div class='single-destinations'><div class='thumb'><img src='" + response[i].Img + "' alt='' style='width:243px;height:162px;'></div><div class='details'><h4 class='justify-content-between'><span style='width:203px;height:43px;'>" + response[i].Hotel + "</span><br /><img src='images/etoiles/" + response[i].DescNbrEtoils+".png' style='width:90px;height:22px;' /></h4><ul class='package-list'><li style='width:203px;height:120px;' class='justify-content-between align-items-center'> <span>"+response[i].DescMeilleursServices+"</span> </li><li class=' d-flex justify-content-between align-items-center'><span class='bottom-align-text'><h4><b> 1002 MAD</b></h4></span><a href='#' id='"+response[i].Id+"' class='genric-btn primary medium arrow act1'>Plus<span class='lnr lnr-arrow-right'></span></a></li></ul></div> </div></div>");
+                    }
+                    hotelClick();
+                    aPartirH = 12;
+                }
+            });
+
+        });
+
+        document.getElementById("restcafeMenu").addEventListener("click", function (e) {
+            e.preventDefault();
+            typeService = "restaurant";
+
+            $.ajax({
+                url: "RestaurantsService",
+                contentType: 'application/json',
+                data: { 'budgetFoods': $("#inpbudgetFood").val() },
+                traditional: true,
+                dataType: "json",
+                type: "get",
+                success: function (response) {
+                    $("#activities1").html("");
+                    for (var i = 0; i < response.length; i++) {
+                       
+                        $("#activities1").html($("#activities1").html()+"<div class='col-lg-3'><div class='single-destinations'><div class='thumb'><img src='" + response[i].Img + "' alt='' style='width:243px;height:162px;'></div><div class='details'><h4 class='d-flex justify-content-between'><span style='width:203px;height:43px;'>" + response[i].ResEtab + "</span></h4><ul class='package-list'><li style='width:203px;height:100px;' class='d-flex justify-content-between align-items-center'> <span><span class='lnr lnr-dinner'><span style='width:203px;height:43px;'>"+response[i].Repas+"</span> </li><a href='#' id='"+response[i].Id+"' class='genric-btn primary medium arrow act1'>Plus de détails <span class='lnr lnr-arrow-right'></span></a></ul></div></div></div>");
+                    }
+                    restcafeClick();
+                    aPartirR = 12;
+                }
+            });
+
+        });
+
+        $("#affPlus").click(function (e) {
+            e.preventDefault();
+            if (typeService == "activity") {
+                $.ajax({
+                    url: "ActivityPaginService",
+                    contentType: 'application/json',
+                    data: {
+                        'listeActivites': $("#inplisteActivites").val(),
+                        "aPartirA": aPartirA
+                    },
+                    traditional: true,
+                    dataType: "json",
+                    type: "get",
+                    success: function (response) {
+                        for (var i = 0; i < response.length; i++) {
+                            
+                            $("#activities1").html($("#activities1").html()+"<div class='col-lg-3'><div class='single-destinations'><div class='thumb'><img src='" + response[i].Img + "' alt='' style='width:243px;height:162px;'></div><div class='details'><h4 class='d-flex justify-content-between'> <span style='width:203px;height:43px;'>" + response[i].Nom + "</span></h4><ul class='package-list'><li style='width:203px;height:61px;' class='d-flex justify-content-between align-items-center'> <span  class='lnr lnr-bookmark'></span> " + response[i].ActiviteTypes + "</li><a href='#' id='" + response[i].Id + "' class='genric-btn primary medium arrow act1'>Plus de détails <span class='lnr lnr-arrow-right'></span></a></ul></div></div></div>");
+                        }
+                        activityClick();
+                        aPartirA += 4;
+                    }
+                });
+
+            }
+            else if (typeService == "restaurant") {
+                $.ajax({
+                    url: "RestaurantPaginService",
+                    contentType: 'application/json',
+                    data: {
+                        'budgetFoods': $("#inpbudgetFood").val(),
+                        "aPartirR": aPartirR
+                    },
+                    traditional: true,
+                    dataType: "json",
+                    type: "get",
+                    success: function (response) {
+                        for (var i = 0; i < response.length; i++) {
+                            $("#activities1").html($("#activities1").html() + "<div class='col-lg-3'><div class='single-destinations'><div class='thumb'><img src='" + response[i].Img + "' alt='' style='width:243px;height:162px;'></div><div class='details'><h4 class='d-flex justify-content-between'><span style='width:203px;height:43px;'>" + response[i].ResEtab + "</span></h4><ul class='package-list'><li style='width:203px;height:100px;' class='d-flex justify-content-between align-items-center'> <span><span class='lnr lnr-dinner'><span style='width:203px;height:43px;'>" + response[i].Repas + "</span> </li><a href='#' id='" + response[i].Id + "' class='genric-btn primary medium arrow act1'>Plus de détails <span class='lnr lnr-arrow-right'></span></a></ul></div></div></div>");
+                        }
+                        restcafeClick();
+                        aPartirR += 4;
+
+                    }
+                });
+            }
+            else if (typeService == "hotel") {
+                $.ajax({
+                    url: "HotelPaginService",
+                    contentType: 'application/json',
+                    data: {
+                        'budgetHotel': $("#inpbudgetHotel").val(),
+                        "aPartirH": aPartirH
+                    },
+                    traditional: true,
+                    dataType: "json",
+                    type: "get",
+                    success: function (response) {
+                        for (var i = 0; i < response.length; i++) {
+                            $("#activities1").html($("#activities1").html() + "<div class='col-lg-3'><div class='single-destinations'><div class='thumb'><img src='" + response[i].Img + "' alt='' style='width:243px;height:162px;'></div><div class='details'><h4 class='justify-content-between'><span style='width:203px;height:43px;'>" + response[i].Hotel + "</span><br /><img src='images/etoiles/" + response[i].DescNbrEtoils + ".png' style='width:90px;height:22px;' /></h4><ul class='package-list'><li style='width:203px;height:120px;' class='justify-content-between align-items-center'> <span>" + response[i].DescMeilleursServices + "</span> </li><li class=' d-flex justify-content-between align-items-center'><span class='bottom-align-text'><h4><b> 1002 MAD</b></h4></span><a href='#' id='" + response[i].Id + "' class='genric-btn primary medium arrow act1'>Plus<span class='lnr lnr-arrow-right'></span></a></li></ul></div> </div></div>");
+                        }
+                        hotelClick();
+                        aPartirH += 4;
+                    }
+                });
+
+            }
+
+        });
+    </script>
+}
+
+@section Styles{
+    <style>
+        .card img {
+            width: 100%;
+            height: 100%;
+        }
+
+        #gaugeEstimation {
+            width: 130px;
+            margin-left: 200px;
+        }
+    </style>
+}
+
+<section class="about-banner relative">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12">
+                <h1 class="text-white">
+                    Marrakech
+                </h1>
+                <p class="text-white link-nav">
+                    <a href="index.html">Afrique </a>
+                    <span class="lnr lnr-arrow-right"></span>  <a href="#"> Maroc</a>
+                    <span class="lnr lnr-arrow-right"></span>  <a href="#"> Marrakech</a>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Start post-content Area -->
+<section class="post-content-area single-post-area" style="position:relative;padding-bottom:10px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 posts-list">
+                <div class="row single-post">
+                    <div class="col-lg-12">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-10 active-hot-deal-carusel">
+                                @for (int i = 0; i < Model.Images.Count; i++)
+                                {
+                                    <div class="single-carusel">
+                                        <div class="thumb relative">
+                                            <img class="img-fluid" src="@Model.Images[i]" alt="..." style="width:604px;height:422px;">
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-3  col-md-3 meta-details">
+                        <ul class="tags">
+                            <li><a href="#">Jemaa el-Fna,</a></li>
+                            <li><a href="#">Maroc,</a></li>
+                            <li><a href="#">Morocco,</a></li>
+                            <li><a href="#">Culture</a></li>
+                        </ul>
+                        <div class="user-details row">
+                            <p class="view col-lg-12 col-md-12 col-6"><a href="#">25 Views</a> <span class="lnr lnr-eye"></span></p>
+
+                            <ul class="social-links col-lg-12 col-md-12 col-6">
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-9 col-md-9">
+                        <blockquote class="generic-blockquote">
+                            <h1 class="mt-10 mb-10">Marrakech <img src="@Model.Flag" style="width:32px;height:32px;" /></h1>
+                            @Html.DevExtreme().ScrollView().Width("100%").Height("250px").Direction(ScrollDirection.Vertical).Content(@<text>
+                                <p>
+                                    Vous pouvez désormais naviguer de façon privée. Les autres utilisateurs de cet appareil ne verront pas votre activité. Les téléchargements et les favoris seront cependant enregistrés. En savoir plus
+
+                                    Les informations suivantes ne seront pas enregistrées dans Chrome :
+                                    Votre historique de navigation
+                                    Les cookies et les données de sites
+                                    Les informations saisies dans les formulaires
+                                    Votre activité peut rester visible par :
+                                    Les sites Web que vous consultez
+                                    Votre employeur ou votre établissement scolaire
+                                    Votre fournisseur d'accès à Internet
+                                    Vous pouvez désormais naviguer de façon privée. Les autres utilisateurs de cet appareil ne verront pas votre activité. Les téléchargements et les favoris seront cependant enregistrés. En savoir plus
+                                    Les informations suivantes ne seront pas enregistrées dans Chrome :
+                                    Votre historique de navigation
+                                    Les cookies et les données de sites
+                                    Les informations saisies dans les formulaires
+                                    Votre activité peut rester visible par :
+                                    Les sites Web que vous consultez
+                                    Votre employeur ou votre établissement scolaire
+                                    Votre fournisseur d'accès à Internet
+                                </p>
+                            </text>)
+                        </blockquote>
+
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="quotes">
+                            <a class="weatherwidget-io" href="https://forecast7.com/fr/31d63n7d98/marrakesh/" data-label_1="Marrakech" data-label_2="Méteo" data-font="Play" data-theme="pure">MARRAKECH Méteao</a>
+                            <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = 'https://weatherwidget.io/js/widget.min.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'weatherwidget-io-js');</script>
+                        </div>
+                        <div class="quotes" style="position:relative;">
+                            <div class="map-wrap" style="width:100%; height: 445px;" id="map">
+                                @(Html.DevExtreme().Map()
+                                                                .Provider(GeoMapProvider.Google)
+                                                                .ID("map")
+                                                                .Key(k => k.Google("AIzaSyDk2m6n8ICK7FSmTHBLlapAWF3epiDdkHE"))
+                                                                .Zoom(12)
+                                                                .Center(31.62649619, -7.98579859)
+                                                                .AutoAdjust(false)
+                                                                .Width("100%")
+                                                                .Height("445px")
+                                                                .Controls(true)
+                                                                .Markers(markers =>
+                                                                {
+                                                                    for (int i = 0; i < 5; i++)
+                                                                    {
+                                                                        markers.Add().Address(Model.Hotels[i].Adresse).Tooltip("<img src='" + Model.Hotels[i].Img + "' style='float:left;width:32px;height:32px;margin-right:10px;'/><p>" + Model.Hotels[i].Hotel + "</p><a href='" + Model.Hotels[i].LienRes + "' target='_blank'>Reserver</a>").IconSrc("images/mapicons/hotel.png");
+                                                                    }
+
+                                                                    for (int i = 0; i < 5; i++)
+                                                                    {
+                                                                        markers.Add().Address(Model.Activities[i].Adresse).Tooltip(Model.Activities[i].Id.ToString()).IconSrc("images/mapicons/activity.png");
+                                                                    }
+                                                                    for (int i = 0; i < 5; i++)
+                                                                    {
+                                                                        markers.Add().Address(Model.Restaurants[i].Adresse).Tooltip(Model.Restaurants[i].Id.ToString()).IconSrc("images/mapicons/restaurant.png");
+                                                                    }
+                                                                })
+                                )
+
+                            </div>
+                            <div style="z-index:1;width:100px;position:absolute;top:250px;right:-10px;">
+                                <img src="~/images/mapicons/activity.png" style="margin-bottom:5px;" /> @Html.DevExtreme().CheckBox().ID("").OnValueChanged("fActivity")<br />
+                                <img src="~/images/mapicons/hotel.png" style="margin-bottom:5px;" /> @Html.DevExtreme().CheckBox().ID("").OnValueChanged("fHotels")<br />
+                                <img src="~/images/mapicons/restaurant.png" /> @Html.DevExtreme().CheckBox().ID("").OnValueChanged("fRestaurants")
+                            </div>
+                            <script>
+                                function fHotels(e) {
+                                    var mapWidget = $("#map").dxMap("instance");
+                                    if (e.value == true) {
+                                        var options = mapWidget.option("markers");
+                                        mapWidget.removeMarker(options);
+                                        for (var i = 0; i < locationHotels.length; i++) {
+                                            mapWidget.addMarker({
+                                                location: locationHotels[i],
+                                                iconSrc: "images/mapicons/hotel.png"
+                                            });
+                                        }
+                                    }
+                                    else {
+                                        var options = mapWidget.option("markers");
+                                        mapWidget.removeMarker(options);
+                                    }
+                                }
+
+                                function fRestaurants(e) {
+                                    var mapWidget = $("#map").dxMap("instance");
+                                    if (e.value == true) {
+                                        var options = mapWidget.option("markers");
+                                        mapWidget.removeMarker(options);
+                                        for (var i = 0; i < locationRestaurants.length; i++) {
+                                            mapWidget.addMarker({
+                                                location: locationRestaurants[i],
+                                                iconSrc: "images/mapicons/restaurant.png"
+                                            });
+                                        }
+                                    }
+                                    else {
+                                        var options = mapWidget.option("markers");
+                                        mapWidget.removeMarker(options);
+                                    }
+                                }
+
+                                function fActivity(e) {
+                                    var mapWidget = $("#map").dxMap("instance");
+                                    if (e.value == true) {
+                                        var options = mapWidget.option("markers");
+                                        mapWidget.removeMarker(options);
+                                        for (var i = 0; i < locationActivities.length; i++) {
+                                            mapWidget.addMarker({
+                                                location: locationActivities[i],
+                                                iconSrc: "images/mapicons/activity.png"
+                                            });
+                                        }
+                                    }
+                                    else {
+                                        var options = mapWidget.option("markers");
+                                        mapWidget.removeMarker(options);
+                                    }
+                                }
+
+                            </script>
+                        </div>
+
+
+
+                        <div class="quotes">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <h4>Avez-vous des amis à Marrakech ?</h4>
+                                    <div>
+                                        <div style="margin-left:10px;margin-top:5px;">
+                                            <img src="~/images/fbAvatar.gif" style="width:64px;height:64px;" />
+                                            <img src="~/images/fbAvatar.gif" style="width:64px;height:64px;" />
+                                            <img src="~/images/fbAvatar.gif" style="width:64px;height:64px;" />
+                                            <img src="~/images/fbAvatar.gif" style="width:64px;height:64px;" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 text-center">
+                                    <h6>Connectez-vous a facebook?</h6>
+                                    <div style="margin-top:30px;">
+                                        <!--Facebook-->
+                                        <fb:login-button size="large"
+                                                         onlogin="Log.info('onlogin callback')" >
+                                            Connection
+                                        </fb:login-button>
+                                        <script>
+                                            window.fbAsyncInit = function () {
+                                                FB.init({
+                                                    appId: '1854862711481668',
+                                                    autoLogAppEvents: true,
+                                                    xfbml: true,
+                                                    version: 'v3.0'
+                                                });
+                                            };
+
+                                            (function (d, s, id) {
+                                                var js, fjs = d.getElementsByTagName(s)[0];
+                                                if (d.getElementById(id)) { return; }
+                                                js = d.createElement(s); js.id = id;
+                                                js.src = "https://connect.facebook.net/fr_FR/sdk.js";
+                                                fjs.parentNode.insertBefore(js, fjs);
+                                            }(document, 'script', 'facebook-jssdk'));
+
+                                            (function (d, s, id) {
+                                                var js, fjs = d.getElementsByTagName(s)[0];
+                                                if (d.getElementById(id)) return;
+                                                js = d.createElement(s); js.id = id;
+                                                js.src = 'https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v3.0&appId=1854862711481668&autoLogAppEvents=1';
+                                                fjs.parentNode.insertBefore(js, fjs);
+                                            }(document, 'script', 'facebook-jssdk'));
+                                        </script>
+                                        <!--end Facebook-->
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 sidebar-widgets">
+                <div class="widget-wrap">
+
+                    <div class="single-sidebar-widget popular-post-widget">
+                        <h4 class="popular-title">hôtel recommandé</h4>
+                        <div class="popular-post-list">
+                            <div class="col-lg-12">
+                                <div class="single-other-issue">
+                                    <div class="thumb">
+                                        @{
+                                            Random rnd = new Random();
+                                            int r = rnd.Next(Model.Hotels.Count);
+                                        }
+                                        <img class="img-fluid" src="@Model.Hotels[r].Img" alt="" style="width:258px;height:172px;">
+                                    </div>
+                                    <div class="details">
+                                        <h4 class="d-flex justify-content-between">
+                                            <span>@Model.Hotels[r].Hotel</span>
+
+
+                                        </h4>
+                                        <ul class="package-list">
+                                            <li class="d-flex justify-content-between align-items-center">
+                                                <span>WiFi</span>
+                                                @if (Model.Hotels[r].DescMeilleursServices.Contains("Wi-Fi") || Model.Hotels[r].DescMeilleursServices.Contains("Wifi"))
+                                                {
+                                                    <span>Oui</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>Non</span>
+
+                                                }
+                                            </li>
+                                            <li class="d-flex justify-content-between align-items-center">
+                                                <span>Salle de Sport</span>
+                                                @if (Model.Hotels[r].DescMeilleursServices.Contains("Sport") || Model.Hotels[r].DescMeilleursServices.Contains("sport"))
+                                                {
+                                                    <span>Oui</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>Non</span>
+                                                }
+                                            </li>
+                                            <li class="d-flex justify-content-between align-items-center">
+                                                <span>Service de Chambre</span>
+                                                @if (Model.Hotels[r].DescMeilleursServices.Contains("service") || Model.Hotels[r].DescMeilleursServices.Contains("Service"))
+                                                {
+                                                    <span>Oui</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>Non</span>
+                                                }
+                                            </li>
+                                            <li class="d-flex justify-content-between align-items-center">
+                                                <span>Climatisation</span>
+                                                @if (Model.Hotels[r].DescMeilleursServices.Contains("clim") || Model.Hotels[r].DescMeilleursServices.Contains("Clim"))
+                                                {
+                                                    <span>Oui</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>Non</span>
+                                                }
+                                            </li>
+                                            <li class="d-flex justify-content-between align-items-center">
+                                                <span>Prix</span>
+                                                <a href="#" class="price-btn">@Model.Hotels[r].Prix MAD</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        
+                        <div class="star text-center">
+                            @{ 
+                                string str = "images/etoiles/" + @Model.Hotels[r].DescNbrEtoils + ".png";
+                            }
+                        <img src=@str style="width:90px;height:22px;" />
+                        <div class="col-lg-12" style="margin-top:10px;">
+                            <a href="@Model.Hotels[r].LienRes" target="_blank" class="genric-btn primary small">Réserver</a>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="single-sidebar-widget post-category-widget">
+                        <h4 class="category-title">Top ctivités</h4>
+                        <ul class="cat-list">
+                            <li> <a href="#" class="d-flex justify-content-between"> <p>Shopping</p> <p>65</p> </a></li>
+                            <li> <a href="#" class="d-flex justify-content-between"> <p>Nature et parcs</p> <p>22</p> </a></li>
+                            <li> <a href="#" class="d-flex justify-content-between"> <p>Réstauration</p> <p>12</p> </a> </li>
+                            <li> <a href="#" class="d-flex justify-content-between"> <p>Transports</p> <p>105</p> </a></li>
+                            <li> <a href="#" class="d-flex justify-content-between"> <p>Sports nautiques</p> <p>22</p> </a></li>
+                            <li> <a href="#" class="d-flex justify-content-between"> <p>Jeux et divertissements</p> <p>37</p> </a></li>
+                            <li> <a href="#" class="d-flex justify-content-between"> <p>Ressources touristiques</p> <p>55</p> </a></li>
+                        </ul>
+                    </div>
+                    <div class="single-sidebar-widget tag-cloud-widget">
+                        <h4 class="tagcloud-title">Tags</h4>
+                        <ul>
+                            <li><a href="#">En famille</a></li>
+                            <li><a href="#">Groupes</a></li>
+                            <li><a href="#">Seniors</a></li>
+                            <li><a href="#">Printemps</a></li>
+                            <li><a href="#">Été</a></li>
+                            <li><a href="#">Automne</a></li>
+                            <li><a href="#">Hiver</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row" style="position:absolute;bottom:400px;right:180px;width:600px;">
+        @functions {
+        LinearGaugeBuilder CreateGauge()
+        {
+            return Html.DevExtreme().LinearGauge()
+                .Scale(s => s
+                    .StartValue(100)
+                    .EndValue(5000)
+                    .TickInterval(10)
+                    .Label(l => l.CustomizeText(@"
+                function (arg) {
+                    return "" "" + arg.valueText;
+                }
+            "))
+                );
+        }
+        }
+        <div id="gaugeEstimation" style="width:600px;">
+            <p style="font-size:25px;position:absolute;bottom:80px;right:100px;">Budget moyen (MAD)</p>
+            @(CreateGauge()
+                                    .ID("c1")
+                                    .Value(int.Parse(@ViewData["budgetMoyen"].ToString()))
+                                    .Subvalues(new double[] { double.Parse(@ViewData["minBudget"].ToString()), double.Parse(@ViewData["maxBudget"].ToString()) })
+                                        .SubvalueIndicator(i => i
+                                            .Type(GaugeIndicatorType.TextCloud)
+                                            .Color("#734F96")
+                                        )
+            )
+
+
+        </div>
+    </div>
+
+
+</section>
+
+
+
+
+
+@*...Modal..*@
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row align-items-center">
+                    <div class="col-lg-5 info-left">
+                        <img id="modalImg" class="img-fluid" src="https://media-cdn.tripadvisor.com/media/photo-s/02/7e/de/06/piscine-lagon.jpg" alt="" style="width:406px;height:283px;">
+                    </div>
+
+                    <div class="col-lg-7 info-right">
+                        <h6 id="modalNomService" style="margin-top:20px;">Hotel</h6>
+                        <div class="row">
+                            <div class="col-md-6 col-12">
+                                <h2 id="modalNom" style="margin-top:10px;">Riad El Zohar </h2>
+                            </div>
+
+                            <div class="star col-md-6 col-12 text-center" id="hotelInfos">
+                                <span><h3><b style="color: #ffa500;" id="modalPrix"> 1002 MAD</b></h3></span>
+                                <img src="~/images/etoiles/1.png" id="modalStar" style="width:120px;height:25px;"/>
+
+                            </div><br>
+                        </div>
+                        <br />
+                        <h6>Détails</h6><br>
+                        <div class="user-details row">
+                            <p class="user-name col-lg-5 col-md-5 col-12">
+                                <span class="lnr lnr-bookmark"></span>
+                                <a href="#" style="color: #697179 " id="modalClassement"> Nº20 sur hôtels à Marrakech</a>
+                            </p>
+                            <p class="user-name col-lg-4 col-md-4 col-6">
+                                <span class="lnr lnr-phone-handset"></span>
+                                <a href="#" style="color: #697179 " id="modalTel"> 00 44 7802 203124</a>
+                            </p>
+                            <p class="user-name col-lg-3 col-md-3 col-12">
+                                <span class="lnr lnr-link"></span>
+                                <u><a href="#" style="color: #796969 "> Site web</a></u>
+                            </p>
+                            <p class="user-name col-lg-12 col-md-12 col-12">
+                                <span class="lnr lnr-map-marker"></span>
+                                <a href="#" style="color: #697179 " id="modalAdresse"> 56 Derb El Hammam | Mouassine, Marrakech 40000, Maroc</a>
+                            </p>
+                        </div>
+                        <h6 id="modalTypeServiceNom">Services</h6><br>
+                        <div class="user-details row" id="modalTypeService">
+                            <p class="user-name col-lg-6 col-md-6 col-12">
+                                <span class="lnr lnr-checkmark-circle"></span>
+                                <a href="#" style="color: #697179 "> Wi-Fi gratuit</a>
+                            </p>
+                        </div>
+                        <div id="modalConseil">
+                            <h6>Consellé à</h6><br>
+                            <div class="user-details row">
+                                <p id="test" class="user-name col-12 ">
+                                    <span class="lnr lnr-tag"></span>
+                                    <u><a href="#" style="color: #697179 "> Réunions d'affaires</a></u>,
+                                    <u><a href="#" style="color: #697179 "> Grandes occasions</a></u>,
+                                    <u><a href="#" style="color: #697179 "> Groupes</a></u>,
+                                    <u><a href="#" style="color: #697179 "> Romantique</a></u>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 info-right">
+                        <h6>Description</h6><br>
+                        <p id="modalDescription">
+                            <b id="modalDescName">Riad El Zohar</b>
+                            <span id="modalDescContent">a une disposition traditionnelle - le bâtiment entoure un espace extérieur charmant qui a sa propre piscine. Les clients peuvent prendre un bain quand ils veulent échapper à la chaleur de Marrakech. C'est l'une des expériences luxueuses ultimes pendant que vous restez dans la ville; C'est merveilleux de retourner au Riad après une journée d'exploration et de détente dans la piscine.</span>
+                        </p>
+                        <div class="user-details row"></div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <a href="#" class="genric-btn info-border" data-dismiss="modal">Fermer</a>
+                <a href="#" id="modalLien" target="_blank" class="genric-btn danger-border arrow"> Réserver<span class="lnr lnr-arrow-right"></span></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Start destinations Area -->
+<section class="destinations-area">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="button-group-area mt-10">
+                <a href="#" id="activitiesMenu" class="genric-btn primary-border medium">Activités</a>
+                <a href="#" id="restcafeMenu" class="genric-btn danger-border medium">Restaurants &Aacute; Cafés</a>
+                <a href="#" id="hotelsMenu" class="genric-btn info-border medium">Hôtels</a>
+            </div>
+        </div>
+
+
+        <div class="row" style="margin:auto;margin-top:30px;">
+
+            <div class="row" style="margin-left:0px;margin-right:20px;" id="activities1">
+                @for (int i = 0; i < Model.Activities.Count; i++)
+                {
+                        <div class="col-lg-3">
+                            <div class="single-destinations">
+                                <div class="thumb">
+                                    <img src="@Model.Activities[i].Img" alt="" style="width:243px;height:162px;">
+                                </div>
+                                <div class="details">
+                                    <h4 class="d-flex justify-content-between">
+                                        <span style="width:203px;height:43px;">@Model.Activities[i].Nom</span>
+                                    </h4>
+                                        <ul class="package-list">
+                                        <li style="width:203px;height:61px;" class="d-flex justify-content-between align-items-center">
+                                            <span class="lnr lnr-bookmark"></span> @Model.Activities[i].ActiviteTypes
+                                        </li>
+                                        <a href="#" id="@Model.Activities[i].Id" class="genric-btn primary medium arrow act1">
+                                            Plus de détails <span class="lnr lnr-arrow-right"></span>
+                                        </a>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                }
+            </div>
+            <div class="row" style="margin:auto;margin-top:30px">
+                <a href="#" class="genric-btn link" style="color: #f59300;" id="affPlus">
+                    Afficher Plus
+                    <span class="lnr lnr-arrow-down"></span>
+                </a>
+            </div>
+
+        </div>
+        <br /><br /><br /><br />
+</div>>
+</section>

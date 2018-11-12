@@ -1,0 +1,120 @@
+﻿@page
+@model PFA.Pages.CaracteristiquesVoyageModel
+@{
+    ViewData["Title"] = "CaracteristiquesVoyage";
+}
+
+
+
+@section Scripts{
+
+    <script>
+        var idActivity = [];
+        var abc;
+        $(".addActivity").click(function (e) {
+            var index = idActivity.indexOf($(this).attr("id"));
+            if (index > -1) {
+                idActivity.splice(index, 1);
+            }
+            else {
+                idActivity.push($(this).attr("id"));
+            }
+
+            $("#listeActivites").val(idActivity.toString());
+        });
+
+        $("#dtDepart").focus(function () {
+
+            var min = parseInt($("#budget span")[0].style.left);
+            var max = parseInt($("#budget span")[1].style.left);
+            if (min < 45)
+                $($("#budget span")[0]).hide();
+            if (max < 45)
+                $($("#budget span")[1]).hide();
+
+        });
+        $("#dtDepart").blur(function () {
+
+            $("#budget span").show(0);
+
+        });
+    </script>
+
+}
+
+    
+<!-- start banner Area -->
+<section class="relative about-banner">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12">
+                <h1 class="text-white">
+                    Planifier votre voyage
+                </h1>
+                <p class="text-white link-nav"><a href="index.html">Accueil </a>  <span class="lnr lnr-arrow-right"></span>  <a href="contact.html"> Planification de voyage </a></p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End banner Area -->
+<!-- Start contact-page Area -->
+<section class="contact-page-area section-gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <form asp-page="Recommandation" class="form-area contact-form text-left" method="post">
+                    <div class="row">
+                        <div class="col-lg-6 form-group">
+                            <input placeholder="J'habite à" onfocus="this.placeholder = ''" onblur="this.placeholder = ''" class="common-input mb-20 form-control" required="" type="text" id="localisation" name="localisation" />
+                            <input type="text" class="form-control date-picker" name="dtDepart" id="dtDepart" value="@DateTime.Now.ToShortDateString()" placeholder="Date de départ" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Date de départ'" /><br>
+
+                            <div class="slidecontainer">
+                                <div id="budget"></div>
+                                <p>Budget/personne : <b>(<span id="amount">200 Dh - 1000 Dh</span>)</b></p>
+                                <input type="hidden" id="budgetStartValue" name="budgetStartValue" value="200" />
+                                <input type="hidden" id="budgetEndValue" name="budgetEndValue" value="1000" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <div class="slidecontainer">
+                                <input type="range" min="1" max="7" value="1" class="slider" id="jours" />
+                                <p>Nombre de jours : <b>( <span id="nbJours">1</span> jours )</b></p>
+                                <input type="hidden" name="nbJoursValue" id="nbJoursValue" value="1" />
+                            </div>
+                            <div class="slidecontainer">
+                                <input type="range" min="1" max="10" value="2" class="slider" id="personnes" />
+                                <p>Nombre de personnes : <b>( <span id="nbPersonnes">2</span> personnes )</b></p>
+                                <input type="hidden" id="nbPersonnesValue" name="nbPersonnesValue" value="2" />
+                            </div>
+
+                        </div>
+
+                        <div class="col-lg-12 form-group">
+                            <h2 class="typo-list">Je suis intérresé par :</h2><br>
+                            <div class="btn-group-toggle" data-toggle="buttons">
+                                @Html.DevExtreme().ScrollView().Width("100%").Height("220px").Direction(ScrollDirection.Vertical).Content(@<text>
+                                    @for (int i = 0; i < Model.Interets.Count; i++)
+                                    {
+                                        <label class="btn btn-outline-secondary addActivity" style="border-radius: 50px!important; margin: 5px;" id="@Model.Interets[i].id"> @Model.Interets[i].Description</label>
+                                    }
+                                </text>)
+
+                                <input type="hidden" id="listeActivites" name="listeActivites" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="alert-msg" style="text-align: left;"></div>
+                            <button class="genric-btn primary default arrow" type="submit" style="float: right;">Terminer<span class="lnr lnr-arrow-right"></span></button>
+                        </div>
+                        <input type="hidden" value="@Model.ville" id="ville" name="ville" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End contact-page Area -->
+
+<script src="~/js/vendor/jquery-2.2.4.min.js"></script>

@@ -1,0 +1,220 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Choisie une destination";
+}
+
+
+<!-- start banner Area -->
+<section class="banner-area relative">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <form asp-page="CaracteristiquesVoyage" method="post">
+            <div class="row fullscreen align-items-center justify-content-between">
+                <div class="col-lg-6 col-md-6 banner-left">
+                    <h2 class="text-white">Où souhaitez-vous aller ?</h2>
+                    <div class="input-group-icon mt-10 btn-group" style="width:750px;height:40px;">
+                        <div class="icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
+                        <div class="form-select" id="default-select2">
+                            <select name="ville">
+                                <option value="Casablanca">Casablanca</option>
+                                <option value="Marrakech">Marrakech</option>
+                                <option value="Oujda">Oujda</option>
+                                <option value="Tanger">Tanger</option>
+                            </select>
+                        </div>
+                        <input type="submit" class="genric-btn primary primary" value="Suivant" style="width:200px;" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<!-- End banner Area -->
+<!-- Start popular-destination Area -->
+<section class="popular-destination-area section-gap" style="padding-bottom:0px;">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="menu-content pb-70 col-lg-12">
+                <div class="title text-center">
+                    <h1 class="mb-10">Top Destinations</h1>
+                    <p>Nous vivons tous à une époque qui appartient aux jeunes de cœur. La vie qui devient extrêmement rapide, le jour.</p>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="single-destination relative">
+                    <div class="thumb relative">
+                        <div class="overlay overlay-bg"></div>
+                        <img class="img-fluid" src="~/images/Marrakech 1.jpg" alt="">
+                    </div>
+                    <div class="desc">
+                        <a href="#" class="price-btn">Visiter</a>
+                        <h4>Marrakech</h4>
+                        <p>Maroc</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="single-destination relative">
+                    <div class="thumb relative">
+                        <div class="overlay overlay-bg"></div>
+                        <img class="img-fluid" src="~/images/d2.jpg" alt="">
+                    </div>
+                    <div class="desc">
+                        <a href="#" class="price-btn">Visiter</a>
+                        <h4>Paris</h4>
+                        <p>France</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="single-destination relative">
+                    <div class="thumb relative">
+                        <div class="overlay overlay-bg"></div>
+                        <img class="img-fluid" src="~/images/d3.jpg" alt="">
+                    </div>
+                    <div class="desc">
+                        <a href="#" class="price-btn">Visiter</a>
+                        <h4>Cloud Mountain</h4>
+                        <p>Sri Lanka</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="single-destination relative">
+                    <div class="thumb relative">
+                        <div class="overlay overlay-bg"></div>
+                        <img class="img-fluid" src="~/images/london 1.jpg" alt="">
+                    </div>
+                    <div class="desc">
+                        <a href="#" class="price-btn">Visiter</a>
+                        <h4>London</h4>
+                        <p>England</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="single-destination relative">
+                    <div class="thumb relative">
+                        <div class="overlay overlay-bg"></div>
+                        <img class="img-fluid" src="~/images/d1.jpg" alt="">
+                    </div>
+                    <div class="desc">
+                        <a href="#" class="price-btn">Visiter</a>
+                        <h4>Mountain River</h4>
+                        <p>Paraguay</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="single-destination relative">
+                    <div class="thumb relative">
+                        <div class="overlay overlay-bg"></div>
+                        <img class="img-fluid" src="~/images/d6.jpg" alt="">
+                    </div>
+                    <div class="desc">
+                        <a href="#" class="price-btn">Visiter</a>
+                        <h4>Hvar Island</h4>
+                        <p>Croatia</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End popular-destination Area -->
+<!-- Start other-issue Area -->
+<section class="other-issue-area section-gap" style="padding-bottom:150px;">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="menu-content pb-70 col-lg-9">
+                <div class="title text-center">
+                    <h1 class="mb-10">Nos Services</h1>
+                    <p>Nous vivons tous à une époque qui appartient aux jeunes de cœur. La vie qui est.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="single-other-issue">
+                    <div class="thumb">
+                        <img class="img-fluid" src="~/images/fes 2.jpg" alt="">
+                    </div>
+                    <a href="#">
+                        <h4>Hôtels</h4>
+                    </a>
+                    <p>
+                        La préservation de la vie humaine est la valeur ultime, un pilier de l'éthique et le fondement.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-other-issue">
+                    <div class="thumb">
+                        <img class="img-fluid" src="~/images/tangier 1.jpg" alt="">
+                    </div>
+                    <a href="#">
+                        <h4>Locations de Vacances</h4>
+                    </a>
+                    <p>
+                        J'étais toujours quelqu'un qui se sentait vraiment désolé pour moi, ce que je n'avais pas comparé.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-other-issue">
+                    <div class="thumb">
+                        <img class="img-fluid" src="~/images/o3.jpg" alt="">
+                    </div>
+                    <a href="#">
+                        <h4>Activités</h4>
+                    </a>
+                    <p>
+                        J'étais toujours quelqu'un qui se sentait vraiment désolé pour moi, ce que je n'avais pas comparé.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-other-issue">
+                    <div class="thumb">
+                        <img class="img-fluid" src="~/images/o4.jpg" alt="">
+                    </div>
+                    <a href="#">
+                        <h4>Restaurants</h4>
+                    </a>
+                    <p>
+                        There are many kinds of narratives and organizing principles. Science is driven by evidence.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End other-issue Area -->
+<!-- Start home-about Area -->
+<section class="home-about-area">
+    <div class="container-fluid">
+        <div class="row align-items-center justify-content-end">
+            <div class="col-lg-6 col-md-12 home-about-left">
+                <h1>
+                    Contactez-nous
+                </h1>
+                <p>
+                    Les comportements inappropriés sont souvent raillés car «les garçons seront des garçons», les femmes sont confrontées à des normes de conduite plus élevées, en particulier sur le lieu de travail. C'est pourquoi il est crucial, en tant que femmes, que notre comportement au travail soit irréprochable. comportement inapproprié est souvent ri.
+                </p>
+                <a href="#" class="primary-btn text-uppercase">Envoyer une demande</a>
+            </div>
+            <div class="col-lg-6 col-md-12 home-about-right no-padding">
+                <img class="img-fluid" src="~/images/Ouarzazate 1.jpg" alt="">
+            </div>
+        </div>
+    </div>
+</section>
+<br><br><br><br><br><br>
+<!-- End home-about Area -->
